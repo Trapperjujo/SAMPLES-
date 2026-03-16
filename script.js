@@ -127,15 +127,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentlyPlayingBtn = null;
     let updateProgressInterval = null;
     let currentOscillators = [];
+    let currentGainNode = null;
     let currentStartTime = 0;
     let currentDuration = 2.0;
 
-    function initAudio() {
-        if (!audioCtx) audioCtx = new AudioContext();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-    }
-
     function stopCurrentSynthesis() {
+        if (currentGainNode) {
+            try { currentGainNode.gain.cancelScheduledValues(0); } catch(e){}
+            try { currentGainNode.disconnect(); } catch(e){}
+        }
         currentOscillators.forEach(osc => {
             try { osc.stop(); } catch(e){}
             try { osc.disconnect(); } catch(e){}
@@ -144,90 +144,111 @@ document.addEventListener('DOMContentLoaded', () => {
         if (updateProgressInterval) clearInterval(updateProgressInterval);
     }
 
-    function playSynthesis(type) {
-        initAudio();
+    async function playSynthesis(type) {
+        if (!audioCtx) audioCtx = new AudioContext();
+        if (audioCtx.state === 'suspended') await audioCtx.resume();
+        
         stopCurrentSynthesis();
         
         currentDuration = 2.0;
         currentStartTime = audioCtx.currentTime;
+        const now = currentStartTime;
         
-        const masterGain = audioCtx.createGain();
-        masterGain.connect(audioCtx.destination);
+        currentGainNode = audioCtx.createGain();
+        currentGainNode.connect(audioCtx.destination);
 
-        // Schedule gain differently depending on instrument to avoid DOMException overlaps
         if (type === 'pads') {
-            masterGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
-            masterGain.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 1.0);
-            masterGain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + currentDuration);
+            currentGainNode.gain.setValueAtTime(0.01, now);
+            currentGainNode.gain.linearRampToValueAtTime(0.6, now + 1.0);
+            currentGainNode.gain.linearRampToValueAtTime(0.01, now + currentDuration);
         } else {
-            masterGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            masterGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + currentDuration);
+            currentGainNode.gain.setValueAtTime(0.6, now);
+            currentGainNode.gain.exponentialRampToValueAtTime(0.01, now + currentDuration);
         }
 
-        if (type === 'drums') {
-            // Kick
+        if (type === 'drums' || type === 'bundle-1') {
             const osc1 = audioCtx.createOscillator();
             osc1.type = 'sine';
-            osc1.frequency.setValueAtTime(150, audioCtx.currentTime);
-            osc1.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-            osc1.connect(masterGain);
-            osc1.start(); osc1.stop(audioCtx.currentTime + 0.5);
+            osc1.frequency.setValueAtTime(150, now);
+            osc1.frequency.exponentialRampToValueAtTime(0.01, now + 0.5);
+            osc1.connect(currentGainNode);
+            osc1.start(now); 
+            osc1.stop(now + currentDuration);
             currentOscillators.push(osc1);
+            
+            // Add a hi-hat noise burst for flavor
+            const bufferSize = audioCtx.sampleRate * 0.1; // 100ms
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = buffer;
+            const noiseFilter = audioCtx.createBiquadFilter();
+            noiseFilter.type = 'highpass';
+            noiseFilter.frequency.value = 5000;
+            noise.connect(noiseFilter).connect(currentGainNode);
+            noise.start(now);
+            currentOscillators.push(noise);
+
         } else if (type === 'bass') {
             const osc1 = audioCtx.createOscillator();
             osc1.type = 'sine';
-            osc1.frequency.setValueAtTime(55, audioCtx.currentTime);
-            osc1.connect(masterGain);
-            osc1.start(); osc1.stop(audioCtx.currentTime + currentDuration);
+            osc1.frequency.setValueAtTime(55, now);
+            osc1.connect(currentGainNode);
+            osc1.start(now); 
+            osc1.stop(now + currentDuration);
             currentOscillators.push(osc1);
         } else if (type === 'guitars') {
             const osc1 = audioCtx.createOscillator();
             osc1.type = 'sawtooth';
-            osc1.frequency.setValueAtTime(220, audioCtx.currentTime);
-            
+            osc1.frequency.setValueAtTime(220, now);
             const filter = audioCtx.createBiquadFilter();
             filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(1000, audioCtx.currentTime);
-            filter.frequency.linearRampToValueAtTime(200, audioCtx.currentTime + currentDuration);
-            
-            osc1.connect(filter).connect(masterGain);
-            osc1.start(); osc1.stop(audioCtx.currentTime + currentDuration);
+            filter.frequency.setValueAtTime(1000, now);
+            filter.frequency.linearRampToValueAtTime(200, now + currentDuration);
+            osc1.connect(filter).connect(currentGainNode);
+            osc1.start(now); 
+            osc1.stop(now + currentDuration);
             currentOscillators.push(osc1);
         } else if (type === 'piano') {
-            [440, 554, 659].forEach(freq => { // A major chord
+            [440, 554, 659].forEach(freq => {
                 const osc = audioCtx.createOscillator();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                osc.connect(masterGain);
-                osc.start(); osc.stop(audioCtx.currentTime + currentDuration);
+                osc.frequency.setValueAtTime(freq, now);
+                osc.connect(currentGainNode);
+                osc.start(now); 
+                osc.stop(now + currentDuration);
                 currentOscillators.push(osc);
             });
         } else if (type === 'pads') {
-            [220, 277, 330].forEach(freq => { // A major low chord
+            [220, 277, 330, 440].forEach(freq => {
                 const osc = audioCtx.createOscillator();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                osc.connect(masterGain);
-                osc.start(); osc.stop(audioCtx.currentTime + currentDuration);
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, now);
+                osc.connect(currentGainNode);
+                osc.start(now); 
+                osc.stop(now + currentDuration);
                 currentOscillators.push(osc);
             });
         } else if (type === 'synths') {
             const osc1 = audioCtx.createOscillator();
             osc1.type = 'square';
-            osc1.frequency.setValueAtTime(880, audioCtx.currentTime);
-            osc1.frequency.setValueAtTime(880, audioCtx.currentTime + 0.5);
-            osc1.frequency.linearRampToValueAtTime(1760, audioCtx.currentTime + 1.0);
-            osc1.connect(masterGain);
-            osc1.start(); osc1.stop(audioCtx.currentTime + currentDuration);
+            osc1.frequency.setValueAtTime(440, now);
+            osc1.frequency.setValueAtTime(440, now + 0.2);
+            osc1.frequency.linearRampToValueAtTime(880, now + 0.5);
+            osc1.connect(currentGainNode);
+            osc1.start(now); 
+            osc1.stop(now + currentDuration);
             currentOscillators.push(osc1);
         }
     }
 
     document.querySelectorAll('.play-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', async (e) => {
             const button = e.currentTarget;
             let src = button.getAttribute('data-src');
-            let type = src.split('/').pop().replace('.wav', ''); // e.g. "drums"
+            // If the src is undefined, or missing, default to drums.
+            let type = src ? src.split('/').pop().replace('.wav', '') : 'drums';
             
             const parent = button.closest('.audio-player');
             const progressEl = parent.querySelector('.progress');
@@ -238,10 +259,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Toggle pause/resume
             if (currentlyPlayingBtn === button && audioCtx) {
                 if (audioCtx.state === 'running') {
-                    audioCtx.suspend();
+                    await audioCtx.suspend();
                     button.innerHTML = playIcon;
                 } else if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
+                    await audioCtx.resume();
                     button.innerHTML = pauseIcon;
                 }
                 return;
@@ -255,17 +276,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (prevProg) prevProg.style.width = '0%';
             }
             
-            // Start new playback
             currentlyPlayingBtn = button;
             button.innerHTML = pauseIcon;
             
-            playSynthesis(type);
+            await playSynthesis(type);
             
-            // Manage progress animation
-            if (progressEl) {
-                let pausedTime = 0;
-                let lastContextTime = audioCtx.currentTime;
-                
+            if (progressEl) {                
                 updateProgressInterval = setInterval(() => {
                     if (audioCtx.state === 'running') {
                         let elapsedTime = audioCtx.currentTime - currentStartTime;
