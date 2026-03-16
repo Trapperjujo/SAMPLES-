@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Samples - Hip Hop Roots 1</title>
+    <meta name="description" content="Premium old school and new school hip hop sample packs. Get Hip Hop Roots 1 bundle or individual tracks.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="toast-container"></div>
+    
+    <header>
+        <div class="logo">SCIENCE SAMPLES</div>
+        <nav>
+            <a href="#packs">Sample Packs</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <div class="cart-icon" id="cart-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <span id="cart-count">0</span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>NEW RELEASE</h1>
+                <h2 class="glitch" data-text="HIP HOP ROOTS 1">HIP HOP ROOTS 1</h2>
+                <p>Blend the grit of '90s boom bap with modern new school aesthetics. Premium drum breaks, booming 808s, soulful pianos, and vintage synths.</p>
+                <a href="#bundle" class="cta-button primary">Get The Bundle</a>
+            </div>
+            <div class="hero-visual">
+                <div class="cover-art-container">
+                    <img src="assets/cover.png" alt="Hip Hop Roots 1 Album Cover" class="cover-art">
+                    <div class="glow"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="bundle" class="bundle-section">
+            <div class="section-header">
+                <h2>THE BUNDLE</h2>
+                <p>Get everything at a massive discount.</p>
+            </div>
+            
+            <div class="bundle-card">
+                <div class="bundle-info">
+                    <h3>HIP HOP ROOTS 1 - COMPLETE PACK</h3>
+                    <ul class="features">
+                        <li>Over 200+ Drum one-shots and loops</li>
+                        <li>50+ High quality Synth & Pad loops</li>
+                        <li>Vintage Piano & Guitar stems</li>
+                        <li>100% Royalty Free</li>
+                        <li>24-bit WAV format</li>
+                    </ul>
+                    <div class="bundle-price">
+                        <span class="original-price">$49.99</span>
+                        <span class="current-price">$29.99</span>
+                    </div>
+                    <button class="add-to-cart-btn bundle-buy" data-id="bundle-1" data-name="Hip Hop Roots 1 - Complete Pack" data-price="29.99">
+                        Add Bundle To Cart
+                    </button>
+                </div>
+                <!-- Audio player for bundle demo -->
+                <div class="bundle-demo">
+                    <h4>Pack Demo</h4>
+                    <div class="audio-player">
+                        <button class="play-btn" data-src="assets/samples/drums.wav">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </button>
+                        <div class="waveform">
+                            <div class="progress"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="packs" class="stems-section">
+            <div class="section-header">
+                <h2>INDIVIDUAL STEMS</h2>
+                <p>Only need specific sounds? Buy individual stem packs.</p>
+            </div>
+            
+            <div class="stems-grid">
+                <!-- Drum Tracks -->
+                <div class="stem-card">
+                    <div class="stem-header">
+                        <h3>Drum Tracks</h3>
+                        <span class="price">$9.99</span>
+                    </div>
+                    <p>Punchy kicks, crisp snares, and dusty hi-hats.</p>
+                    <div class="audio-player small">
+                        <button class="play-btn" data-src="assets/samples/drums.wav">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </button>
+                        <span class="track-name">Preview</span>
+                    </div>
+                    <button class="add-to-cart-btn" data-id="stem-drums" data-name="Drum Tracks Pack" data-price="9.99">Add to Cart</button>
+                </div>
+
+                <!-- Bass Tracks -->
+                <div class="stem-card">
+                    <div class="stem-header">
+                        <h3>Bass Tracks</h3>
+                        <span class="price">$7.99</span>
+                    </div>
+                    <p>Deep 808s and funky live bass loops.</p>
+                    <div class="audio-player small">
+                        <button class="play-btn" data-src="assets/samples/bass.wav">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </button>
+                        <span class="track-name">Preview</span>
+                    </div>
+                    <button class="add-to-cart-btn" data-id="stem-bass" data-name="Bass Tracks Pack" data-price="7.99">Add to Cart</button>
+                </div>
+
+                <!-- Guitar Tracks -->
+                <div class="stem-card">
+                    <div class="stem-header">
+                        <h3>Guitar Tracks</h3>
+                        <span class="price">$6.99</span>
+                    </div>
+                    <p>Soulful licks and rhythmic wah-wah chords.</p>
+                    <div class="audio-player small">
+                        <button class="play-btn" data-src="assets/samples/guitars.wav">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </button>
+                        <span class="track-name">Preview</span>
+                    </div>
+                    <button class="add-to-cart-btn" data-id="stem-guitars" data-name="Guitar Tracks Pack" data-price="6.99">Add to Cart</button>
+                </div>
+
+                <!-- Piano Tracks -->
+                <div class="stem-card">
+                    <div class="stem-header">
+                        <h3>Piano Tracks</h3>
+                        <span class="price">$6.99</span>
+                    </div>
+                    <p>Jazzy chord progressions and grand piano melodies.</p>
+                    <div class="audio-player small">
+                        <button class="play-btn" data-src="assets/samples/piano.wav">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </button>
+                        <span class="track-name">Preview</span>
+                    </div>
+                    <button class="add-to-cart-btn" data-id="stem-piano" data-name="Piano Tracks Pack" data-price="6.99">Add to Cart</button>
+                </div>
+
+                <!-- Pads -->
+                <div class="stem-card">
+                    <div class="stem-header">
+                        <h3>Pads</h3>
+                        <span class="price">$5.99</span>
+                    </div>
+                    <p>Atmospheric and ethereal background textures.</p>
+                    <div class="audio-player small">
+                        <button class="play-btn" data-src="assets/samples/pads.wav">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </button>
+                        <span class="track-name">Preview</span>
+                    </div>
+                    <button class="add-to-cart-btn" data-id="stem-pads" data-name="Pads Pack" data-price="5.99">Add to Cart</button>
+                </div>
+
+                <!-- Synths -->
+                <div class="stem-card">
+                    <div class="stem-header">
+                        <h3>Synths</h3>
+                        <span class="price">$7.99</span>
+                    </div>
+                    <p>G-funk leads and modern trap arpeggios.</p>
+                    <div class="audio-player small">
+                        <button class="play-btn" data-src="assets/samples/synths.wav">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </button>
+                        <span class="track-name">Preview</span>
+                    </div>
+                    <button class="add-to-cart-btn" data-id="stem-synths" data-name="Synths Pack" data-price="7.99">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="section-header">
+                <h2>THE SCIENTISTS</h2>
+                <p>Who is behind Science Samples?</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Pioneering the Next Era of Boom Bap</h3>
+                    <p>Science Samples was founded by a collective of platinum-selling producers and sound designers who felt that modern sample packs lacked the grit and soul of classic samplers like the MPC60 and SP-1200.</p>
+                    <p>We process every sound through vintage analog gear, tape machines, and tube compressors to give you unparalleled warmth and texture. Our mission is to provide you with the exact sonic foundation you need to produce hits.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="testimonials-section">
+            <div class="section-header">
+                <h2>PRODUCER REVIEWS</h2>
+                <p>What the community is saying</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="quote">"These drums punch straight through the mix. I threw the Hip Hop Roots 1 snare on my latest track and it instantly knocked."</p>
+                    <div class="author">- DJ Premier League</div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="quote">"The synth stems have a crazy analog warmth to them. It saved me hours of sound design."</p>
+                    <div class="author">- Metro Boomer</div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="quote">"Absolutely essential for any producer trying to capture that golden era NY sound with a modern bounce."</p>
+                    <div class="author">- 9th Ponder</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <div class="section-header">
+                <h2>GET IN TOUCH</h2>
+                <p>Have questions about licensing or custom beats?</p>
+            </div>
+            <form class="contact-form" action="#" method="POST" onsubmit="event.preventDefault(); alert('Message sent successfully!');">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit" class="cta-button primary">Send Message</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="close-btn" id="close-cart">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Items injected by JS -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">$0.00</span>
+            </div>
+            <button class="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </div>
+    <div class="overlay" id="overlay"></div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">SCIENCE SAMPLES</div>
+            <p>&copy; 2026 Science Samples Ltd. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Audio element for playing samples -->
+    <audio id="global-audio-player"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
