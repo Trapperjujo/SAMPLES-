@@ -2,6 +2,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Cart State ---
     let cart = [];
     
+    // Load cart from local storage if available
+    const savedCart = localStorage.getItem('scienceSamplesCart');
+    if (savedCart) {
+        try {
+            cart = JSON.parse(savedCart);
+        } catch (e) {
+            cart = [];
+        }
+    }
+    
     // UI Elements
     const cartCountEl = document.getElementById('cart-count');
     const cartItemsContainer = document.getElementById('cart-items');
@@ -22,36 +32,41 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.classList.toggle('visible');
     }
     
-    cartBtn.addEventListener('click', toggleCart);
-    closeCartBtn.addEventListener('click', toggleCart);
-    overlay.addEventListener('click', toggleCart);
+    if(cartBtn) cartBtn.addEventListener('click', toggleCart);
+    if(closeCartBtn) closeCartBtn.addEventListener('click', toggleCart);
+    if(overlay) overlay.addEventListener('click', toggleCart);
     
     function updateCartUI() {
+        // Save to local storage
+        localStorage.setItem('scienceSamplesCart', JSON.stringify(cart));
+
         // Count
-        cartCountEl.textContent = cart.length;
+        if(cartCountEl) cartCountEl.textContent = cart.length;
         
         // Items
-        cartItemsContainer.innerHTML = '';
-        if (cart.length === 0) {
-            cartItemsContainer.innerHTML = '<p class="empty-cart-msg">Your cart is empty.</p>';
-        } else {
-            cart.forEach(item => {
-                const itemEl = document.createElement('div');
-                itemEl.className = 'cart-item';
-                itemEl.innerHTML = `
-                    <div class="item-info">
-                        <h4>${item.name}</h4>
-                        <span class="item-price">$${item.price.toFixed(2)}</span>
-                    </div>
-                    <button class="remove-btn" data-id="${item.id}">Remove</button>
-                `;
-                cartItemsContainer.appendChild(itemEl);
-            });
+        if (cartItemsContainer) {
+            cartItemsContainer.innerHTML = '';
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="empty-cart-msg">Your cart is empty.</p>';
+            } else {
+                cart.forEach(item => {
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'cart-item';
+                    itemEl.innerHTML = `
+                        <div class="item-info">
+                            <h4>${item.name}</h4>
+                            <span class="item-price">$${item.price.toFixed(2)}</span>
+                        </div>
+                        <button class="remove-btn" data-id="${item.id}">Remove</button>
+                    `;
+                    cartItemsContainer.appendChild(itemEl);
+                });
+            }
         }
         
         // Total
         const total = cart.reduce((sum, item) => sum + item.price, 0);
-        cartTotalPriceEl.textContent = `$${total.toFixed(2)}`;
+        if(cartTotalPriceEl) cartTotalPriceEl.textContent = `$${total.toFixed(2)}`;
         
         // Re-attach listeners to dynamic remove buttons
         document.querySelectorAll('.remove-btn').forEach(btn => {
@@ -61,6 +76,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // Initialize UI on load
+    updateCartUI();
     
     function addToCart(item) {
         // Check if item already in cart

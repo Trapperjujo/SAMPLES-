@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Samples - All Packs</title>
+    <meta name="description" content="Browse all premium sample packs from Science Samples.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="toast-container"></div>
+    
+    <header>
+        <div class="logo">SCIENCE SAMPLES</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="packs.html" style="color: var(--primary-color);">Sample Packs</a>
+            <div class="cart-icon" id="cart-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <span id="cart-count">0</span>
+            </div>
+        </nav>
+    </header>
+
+    <main style="padding-top: 8rem; min-height: 80vh;">
+        <div class="section-header">
+            <h2>ALL SAMPLE PACKS</h2>
+            <p>Browse our entire catalog of premium sounds.</p>
+        </div>
+
+        <section class="packs-directory">
+            <div class="packs-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 3rem; max-width: 1200px; margin: 0 auto; padding: 0 5%;">
+                
+                <!-- Pack Item -->
+                <div class="pack-compilation-card stem-card" style="cursor: pointer;" onclick="window.location.href='hip-hop-roots-1.html'">
+                    <img src="assets/cover.png" alt="Hip Hop Roots 1" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <div class="stem-header">
+                        <h3 style="font-size: 1.5rem; text-transform: uppercase;">Hip Hop Roots 1</h3>
+                        <span class="price">$29.99</span>
+                    </div>
+                    <p style="margin-bottom: 0;">200+ Drum one-shots, Synths, Bass, Guitars & Keys</p>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="close-btn" id="close-cart">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Items injected by JS -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">$0.00</span>
+            </div>
+            <button class="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </div>
+    <div class="overlay" id="overlay"></div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">SCIENCE SAMPLES</div>
+            <p>&copy; 2026 Science Samples Ltd. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
